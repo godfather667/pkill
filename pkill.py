@@ -24,22 +24,21 @@ def callback():
 
 w = Label(master, text="Process Killer")
 w.pack()
-l = Label(master, text="Find: ")
 #e = Entry(master, textvariable=sv, vaidate="focusout", validatecommand=callback)e 
 e = Entry(master, textvariable=sv)
-e.pack()
+e.pack(side=TOP)
 b = Button(master, text = "Find", command=callback)
-b.pack(padx=5, pady=10, side=TOP)
+b.pack(side=LEFT)
 b = Button(master, text = "Quit", command=quit)
-b.pack(padx=5, pady=20, side=TOP)
+b.pack(side=LEFT)
 b = Button(master, text = "Kill Process", command=callback)
-b.pack(padx=5, pady=20, side=TOP)
+b.pack(side=LEFT)
 
 #Text Widget
 text = Text(master, wrap=NONE,
             xscrollcommand=xscrollbar.set,
             yscrollcommand=yscrollbar.set)
-text.pack()
+text.pack(side=LEFT, anchor=W, fill=X, expand=YES)
 
 for line in plist:
     info = (line[:98] + '..') if len(line) > 98 else line
