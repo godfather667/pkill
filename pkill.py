@@ -2,6 +2,7 @@ from tkinter import *
 import os
 #define master
 master = Tk()
+master.title("pkill")
 
 #Horizontal (x) Scroll bar
 xscrollbar = Scrollbar(master, orient=HORIZONTAL)
@@ -21,27 +22,29 @@ def callback():
     print(name)
     return True
 
-
-w = Label(master, text="Process Killer")
+w = Label(master, text="Search Box")
 w.pack()
 #e = Entry(master, textvariable=sv, vaidate="focusout", validatecommand=callback)e 
 e = Entry(master, textvariable=sv)
 e.pack(side=TOP)
-b = Button(master, text = "Find", command=callback)
+
+frame = Frame(master)
+b = Button(frame, text = "Find", command=callback)
 b.pack(side=LEFT)
-b = Button(master, text = "Quit", command=quit)
-b.pack(side=LEFT)
-b = Button(master, text = "Kill Process", command=callback)
-b.pack(side=LEFT)
+b = Button(frame, text = "Kill Process", command=callback)
+b.pack(side=LEFT, padx=20)
+b = Button(frame, text = "Quit", command=quit)
+b.pack(side=LEFT, padx=10)
+frame.pack(side=TOP)
 
 #Text Widget
 text = Text(master, wrap=NONE,
             xscrollcommand=xscrollbar.set,
             yscrollcommand=yscrollbar.set)
-text.pack(side=LEFT, anchor=W, fill=X, expand=YES)
+text.pack(side=TOP, anchor=W, fill=X, expand=YES)
 
 for line in plist:
-    info = (line[:98] + '..') if len(line) > 98 else line
+    info = (line[:199] + '..') if len(line) > 199 else line
     text.insert(END, info+"\n")
 
 #Configure the scrollbars
