@@ -1,66 +1,113 @@
+# pkill.py - Process Killer App
+#
+# Imports
 from tkinter import *
 import os
+
 #define master
 master = Tk()
+
 #Set Main Title
 master.title("pkill")
 #
 # Global Variables (distasteful)
 #
-name = ""   # Search Box Value
-sv = StringVar()
-lidx = "0.0"
+global name        # Search Box Value
+global last        # Last Search Box Value
+global lidx        # Search Index
 
+#
+# Initializations
+sv = StringVar()   # Search Variable
+last = ""          # Previous 'name' is initially empty
+lidx = "0.0"       # Last Index Value
 #
 # Functions:
 #
 # Callback for Search Key
 def callback_find():
+    global lidx
+    global last
     name = sv.get()
-    pos = search(name, text)
-    idx = pos.find('.')
-    base = pos[0:idx+1]
-    lidx = base+"0"
-    lend = base+"end"
-    text.tag_add("here",lidx,lend)
-    text.tag_config("here", background="#e0e0e0")
-    text.see(lidx)
-    return True
-#
-#        self.text.tag_configure("odd", background="#ffffff")
-#
+    pos, lidx = search(name, last, lidx)
+    if (len(name) >0) and (pos == "0.0") and (lidx == "0.0"):
+        return False
+    if pos:
+        lidx = mark(pos, True)   # Mark FLAG: True Marks Line, False Unmarks line
+        last = name
+        return True  
 #
 # Callback for Process Killer
 def callback_kill():
+    global lidx
     name = sv.get()
-    print(name)
+    i = advpos(lidx)
+    lend = i+".0"
+    line = text.get(lidx, lend)
+    pid = line.split()[2]
+    spid = str(pid)
+    bld = "kill -9 "+spid
+    f = os.popen(bld)
+    now = f.read()
     return True
+
 #
 # Load Process Data and Insert into Text Window
 def loadProcess(text):
+    global lidx
     f = os.popen('ps -ef')
     now = f.read()
     plist = now.splitlines()
-
+# CODING: clearing previous Values ??    
     idx = 1
     for line in plist:
         info = (line[:199] + '..') if len(line) > 199 else line
         comb = str(idx)+":  "+info
-        print(comb)
         text.insert(END, comb+"\n")
         idx += 1
     return
 #
 # Search Function
-def search(name, text):
-    start=1.0
+def search(name, last, lidx):
+    if name != last:
+        start = 1.0
+    else:
+        lidx = mark(lidx, False)  # Unmark Current Line
+        pos = advpos(lidx)
+        pos = pos+".0"
+        start = pos
+        
     pos = text.search(name, start, stopindex=END)
     if not pos:
-        return -1.0
-    return pos
+        return "0.0", "0.0"
+    return str(pos), lidx
+#
+# Mark Current Line
+def mark(lidx, mark):
+    pos = str(lidx)
+    idx = pos.find('.')
+    base = pos[0:idx+1]
+    lidx = base+"0"
+    lend = base+"end"
+    text.tag_add("here",lidx,lend)
+    text.tag_add("back",lidx,lend)
+    if mark == True:
+        text.tag_config("here", background="#e0e0e0")
+    else:
+        text.tag_config("back", background="#ffffff")
+        
+    text.see(lidx)
+    return lidx
+#
+# Advance Position Marker
+def advpos(pos):
+    idx = pos.find('.')
+    base = pos[0:idx]
+    i = int(base)
+    i += 1
+    base = str(i)
+    return base
     
-
-
 #
 # Setup Widgets:
 #
