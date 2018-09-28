@@ -49,6 +49,10 @@ def callback_kill():
     bld = "kill -9 "+spid
     f = os.popen(bld)
     now = f.read()
+    text.delete("1.0", END)
+    loadProcess(text)
+    decpos(lidx)
+    text.see(lidx)   
     return True
 
 #
@@ -58,7 +62,6 @@ def loadProcess(text):
     f = os.popen('ps -ef')
     now = f.read()
     plist = now.splitlines()
-# CODING: clearing previous Values ??    
     idx = 1
     for line in plist:
         info = (line[:199] + '..') if len(line) > 199 else line
@@ -93,8 +96,8 @@ def mark(lidx, mark):
     text.tag_add("back",lidx,lend)
     if mark == True:
         text.tag_config("here", background="#e0e0e0")
-    else:
-        text.tag_config("back", background="#ffffff")
+#    else:
+#        text.tag_config("back", background="#ffffff")
         
     text.see(lidx)
     return lidx
@@ -107,6 +110,18 @@ def advpos(pos):
     i += 1
     base = str(i)
     return base
+#
+# Advance Position Marker
+def decpos(pos):
+    idx = pos.find('.')
+    base = pos[0:idx]
+    i = int(base)
+    i -= 1
+    if i <= 0:
+        i = 1
+    base = str(i)
+    return base
+    
     
 #
 # Setup Widgets:
