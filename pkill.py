@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # pkill.py - Process Killer App
 #
 # Imports
@@ -25,7 +26,7 @@ lidx = "0.0"       # Last Index Value
 # Functions:
 #
 # Callback for Search Key
-def callback_find():
+def callback_find(event=None):
     global lidx
     global last
     name = sv.get()
@@ -122,6 +123,7 @@ def decpos(pos):
     base = str(i)
     return base
     
+master.bind('<Return>', callback_find)
     
 #
 # Setup Widgets:
