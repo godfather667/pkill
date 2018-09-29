@@ -141,8 +141,8 @@ yscrollbar.pack(side=RIGHT, fill=Y)
 
 w = Label(master, text="Search Box")
 w.pack()
-#e = Entry(master, textvariable=sv, vaidate="focusout", validatecommand=callback)e 
-e = Entry(master, textvariable=sv)
+
+e = Entry(master, width=32, textvariable=sv)
 e.pack(side=TOP)
 
 frame = Frame(master)
@@ -158,7 +158,7 @@ frame.pack(side=TOP)
 text = Text(master, wrap=NONE,
             xscrollcommand=xscrollbar.set,
             yscrollcommand=yscrollbar.set)
-text.pack(side=TOP, anchor=W, fill=X, expand=YES)
+text.pack(side=TOP, anchor=W, fill='both', expand=YES)
 
 loadProcess(text)
 
