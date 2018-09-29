@@ -26,6 +26,7 @@ then entering a Carriage Return OR Clicking Find Button
 will start the search function.
 
 If the Search Value is found the line is highlighted.
+if the Search Value is **Not Found** the test heading is highlighted.
 
 Clicking on the Find Button will continue the search on the
 line after the selected line. This will continue until

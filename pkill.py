@@ -83,7 +83,7 @@ def search(name, last, lidx):
         
     pos = text.search(name, start, stopindex=END)
     if not pos:
-        return "0.0", "0.0"
+        return "1.0", "1.0"
     return str(pos), lidx
 #
 # Mark Current Line
@@ -96,9 +96,11 @@ def mark(lidx, mark):
     text.tag_add("here",lidx,lend)
     text.tag_add("back",lidx,lend)
     if mark == True:
-        text.tag_config("here", background="#e0e0e0")
-#    else:
-#        text.tag_config("back", background="#ffffff")
+        text.tag_delete("back")
+        text.tag_config("here", background="yellow")
+    else:
+        text.tag_delete("here")
+        text.tag_config("back", background="#ffffff")
         
     text.see(lidx)
     return lidx
