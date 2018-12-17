@@ -60,7 +60,8 @@ def callback_kill():
 # Load Process Data and Insert into Text Window
 def loadProcess(text):
     global lidx
-    f = os.popen('ps -ef')
+    f = os.popen('ps -eo time,user,args | sort -gr')
+    # f = os.popen('ps -ef')
     now = f.read()
     plist = now.splitlines()
     idx = 1
@@ -114,7 +115,7 @@ def advpos(pos):
     base = str(i)
     return base
 #
-# Advance Position Marker
+# Decrement Position Marker
 def decpos(pos):
     idx = pos.find('.')
     base = pos[0:idx]
@@ -165,6 +166,7 @@ loadProcess(text)
 #Configure the scrollbars
 xscrollbar.config(command=text.xview)
 yscrollbar.config(command=text.yview)
+
 #Run tkinter main loop
 mainloop()
 
